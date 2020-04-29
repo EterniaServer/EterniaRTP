@@ -1,0 +1,17 @@
+server:
+  prefix: '&8[&aE&9R&8] '
+  only-player: '&7Somente jogadores podem utilizar esse comando&8.'
+  no-perm: '&7Você não possui permissão para isso&8.'
+  reload: '&7Reiniciando configurações&8.'
+econ:
+  vault-no: '&7Vault não encontrado&8.'
+  no-hook: '&7Nenhum plugin de economia encontrado&8.'
+  disable: '&7Modo sem dinheiro&8.'
+  no-money: '&7Você não possui todo esse dinheiro&8.'
+  give: '&7Seus &3%money% &7foram devolvidos&8.'
+rtp:
+  wait: '&7Você precisa esperar antes de poder se teleportar novamente&8.'
+  worldb: '&7Esse mundo está proibido de usar &3RTP&8.'
+  no-safe: '&7Nenhum terreno seguro encontrado&8.'
+  suc-money: '&7Teleportado com sucesso&8,&7 isso lhe custou &3%money%&8.'
+  suc-free: '&7Teleportado com sucesso&8.'

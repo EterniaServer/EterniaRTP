@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <pattern value="br.com.eterniaserver.config.Checks" />
+    <pattern value="br.com.eterniaserver.config.Configs" />
+    <pattern value="br.com.eterniaserver.config.Configs" method="Configs" />
+    <pattern value="br.com.eterniaserver.EterniaRTP" />
+    <pattern value="br.com.eterniaserver.methods.PlayerCooldown" />
+    <pattern value="br.com.eterniaserver.commands.RTP" />
+    <pattern value="br.com.eterniaserver.commands.RTP" method="RTP" />
+    <pattern value="br.com.eterniaserver.dependencies.VaultHook" />
+    <pattern value="br.com.eterniaserver.dependencies.VaultHook" method="VaultHook" />
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

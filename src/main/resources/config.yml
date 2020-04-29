@@ -1,0 +1,11 @@
+server:
+  money: true
+  cooldown: 300
+  amount: 5000
+rtp:
+  minx: -2000
+  maxx: 2000
+  minz: -2000
+  maxz: 2000
+  worlds-banned:
+    - 'world_the_end'
