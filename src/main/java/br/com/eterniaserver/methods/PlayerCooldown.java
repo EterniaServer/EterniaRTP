@@ -4,7 +4,11 @@ import br.com.eterniaserver.config.Configs;
 
 public class PlayerCooldown {
 
-    private int cooldown = Configs.configs.getInt("server.cooldown");
+    private int cooldown;
+
+    public PlayerCooldown(Configs configs) {
+        this.cooldown = configs.configs.getInt("server.cooldown");
+    }
 
     public int getCountdown() {
         return cooldown;

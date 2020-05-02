@@ -9,21 +9,21 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class VaultHook {
 
-    public VaultHook(EterniaRTP plugin) {
+    public VaultHook(EterniaRTP plugin, Configs configs, Strings strings) {
         if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
             RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
             if (rsp != null) {
-                if (Configs.configs.getBoolean("server.money")) {
-                    Configs.economy = rsp.getProvider();
-                    Configs.econ = true;
+                if (configs.configs.getBoolean("server.money")) {
+                    configs.economy = rsp.getProvider();
+                    configs.econ = true;
                 } else {
-                    Bukkit.getConsoleSender().sendMessage(Strings.putPrefix("econ.disable"));
+                    Bukkit.getConsoleSender().sendMessage(strings.putPrefix("econ.disable"));
                 }
             } else {
-                Bukkit.getConsoleSender().sendMessage(Strings.putPrefix("econ.no-hook"));
+                Bukkit.getConsoleSender().sendMessage(strings.putPrefix("econ.no-hook"));
             }
         } else {
-            Bukkit.getConsoleSender().sendMessage(Strings.putPrefix("econ.vault-no"));
+            Bukkit.getConsoleSender().sendMessage(strings.putPrefix("econ.vault-no"));
         }
     }
 

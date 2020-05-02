@@ -1,6 +1,5 @@
 package br.com.eterniaserver.commands;
 
-import br.com.eterniaserver.EterniaRTP;
 import br.com.eterniaserver.config.Configs;
 import br.com.eterniaserver.config.Strings;
 import br.com.eterniaserver.methods.RTPPlayer;
@@ -12,41 +11,43 @@ import org.bukkit.entity.Player;
 
 public class RTP implements CommandExecutor {
 
-    private final EterniaRTP plugin;
+    private final RTPPlayer rtpPlayer;
+    private final Strings strings;
+    private final Configs configs;
 
-    public RTP(EterniaRTP plugin) {
-        this.plugin = plugin;
+    public RTP(RTPPlayer rtpPlayer, Strings strings, Configs configs) {
+        this.rtpPlayer = rtpPlayer;
+        this.strings = strings;
+        this.configs = configs;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.rtp")) {
-                if (args.length == 1 && player.hasPermission("eternia.rtp.reload")) {
-                    new Configs(plugin);
-                    player.sendMessage(Strings.putPrefix("server.reload"));
-                } else {
-                    if (!Configs.cantp.contains(player.getName())) {
-                        if (Configs.econ) {
-                            if (Configs.economy.has(player, Configs.configs.getInt("server.amount"))) {
-                                Configs.economy.withdrawPlayer(player, Configs.configs.getInt("server.amount"));
-                                RTPPlayer.teleportPlayer(player);
-                            } else {
-                                player.sendMessage(Strings.putPrefix("econ.no-money"));
-                            }
+            if (args.length == 1 && player.hasPermission("eternia.rtp.reload")) {
+                configs.reload();
+                player.sendMessage(strings.putPrefix("server.reload"));
+            } else if (args.length == 0 && player.hasPermission("eternia.rtp")) {
+                if (!configs.ptp.containsKey(player)) {
+                    if (configs.econ) {
+                        if (configs.economy.has(player, configs.configs.getInt("server.amount"))) {
+                            configs.economy.withdrawPlayer(player, configs.configs.getInt("server.amount"));
+                            rtpPlayer.teleportPlayer(player);
                         } else {
-                            RTPPlayer.teleportPlayer(player);
+                            player.sendMessage(strings.putPrefix("econ.no-money"));
                         }
                     } else {
-                        player.sendMessage(Strings.putPrefix("rtp.wait"));
+                        rtpPlayer.teleportPlayer(player);
                     }
+                } else {
+                    player.sendMessage(strings.putPrefix("rtp.wait"));
                 }
             } else {
-                player.sendMessage(Strings.putPrefix("server.no-perm"));
+                player.sendMessage(strings.putPrefix("server.no-perm"));
             }
         } else {
-            Bukkit.getConsoleSender().sendMessage(Strings.putPrefix("server.only-player"));
+            Bukkit.getConsoleSender().sendMessage(strings.putPrefix("server.only-player"));
         }
         return true;
     }

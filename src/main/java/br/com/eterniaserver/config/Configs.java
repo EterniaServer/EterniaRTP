@@ -12,24 +12,26 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Configs {
 
-    public static final HashMap<Player, PlayerCooldown> ptp = new HashMap<>();
+    public final HashMap<Player, PlayerCooldown> ptp = new HashMap<>();
 
-    public static final List<String> cantp = new ArrayList<>();
+    public boolean econ = false;
 
-    public static boolean econ = false;
+    public Economy economy;
 
-    public static Economy economy;
-
-    public static FileConfiguration configs;
-    public static FileConfiguration messages;
+    public FileConfiguration configs;
+    public FileConfiguration messages;
+    private final EterniaRTP plugin;
 
     public Configs(EterniaRTP plugin) {
+        this.plugin = plugin;
+        reload();
+    }
+
+    public void reload() {
 
         File configsConfigFile = new File(plugin.getDataFolder(), "config.yml");
         if (!configsConfigFile.exists()) {
