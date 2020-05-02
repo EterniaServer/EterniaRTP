@@ -34,7 +34,7 @@ public class RTP implements CommandExecutor {
                 configs.reload();
                 player.sendMessage(strings.putPrefix("server.reload"));
             } else if (args.length == 0 && player.hasPermission("eternia.rtp")) {
-                if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - plugin.rtp.get(player)) > configs.configs.getInt("server.cooldown")) {
+                if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - plugin.rtp.getOrDefault(player, (long) 100)) > configs.configs.getInt("server.cooldown")) {
                     if (configs.econ) {
                         if (configs.economy.has(player, configs.configs.getInt("server.amount"))) {
                             configs.economy.withdrawPlayer(player, configs.configs.getInt("server.amount"));
