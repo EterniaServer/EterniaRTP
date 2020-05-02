@@ -46,7 +46,7 @@ public class RTP implements CommandExecutor {
                         rtpPlayer.teleportPlayer(player);
                     }
                 } else {
-                    player.sendMessage(strings.putPrefix("rtp.wait").replace("%time%", String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - plugin.rtp.get(player)))));
+                    player.sendMessage(strings.putPrefix("rtp.wait").replace("%time%", String.valueOf(configs.configs.getInt("server.cooldown") - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - plugin.rtp.get(player)))));
                 }
             } else {
                 player.sendMessage(strings.putPrefix("server.no-perm"));
