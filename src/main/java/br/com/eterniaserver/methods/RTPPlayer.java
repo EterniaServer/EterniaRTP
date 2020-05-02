@@ -25,7 +25,9 @@ public class RTPPlayer {
             int x, z;
             x = (int) (configs.configs.getInt("rtp.minx") + (configs.configs.getInt("rtp.maxx") - configs.configs.getInt("rtp.minx")) * rand.nextDouble());
             z = (int) (configs.configs.getInt("rtp.minz") + (configs.configs.getInt("rtp.maxz") - configs.configs.getInt("rtp.minz")) * rand.nextDouble());
-            PaperLib.getChunkAtAsync(player.getWorld(), x, z).thenRunAsync(new RunRTP(player, x, z, configs, strings));
+            player.sendMessage(strings.putPrefix("rtp.telep"));
+            configs.ptp.put(player, new PlayerCooldown(configs));
+            PaperLib.getChunkAtAsync(player.getWorld(), x, z).thenRun(new RunRTP(player, x, z, configs, strings));
         } else {
             player.sendMessage(strings.putPrefix("rtp.worldb"));
             if (configs.econ) {

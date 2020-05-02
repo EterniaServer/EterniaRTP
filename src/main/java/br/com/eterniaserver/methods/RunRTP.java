@@ -33,6 +33,7 @@ public class RunRTP extends org.bukkit.scheduler.BukkitRunnable {
         boolean hasLand = false;
         while (!hasLand) {
             if (y <= 50) {
+                configs.ptp.remove(player);
                 player.sendMessage(strings.putPrefix("rtp.no-safe"));
                 if (configs.econ) {
                     configs.economy.depositPlayer(player, configs.configs.getInt("server.amount"));
@@ -60,7 +61,6 @@ public class RunRTP extends org.bukkit.scheduler.BukkitRunnable {
             player.sendMessage(strings.putPrefix("rtp.suc-free"));
         }
         PaperLib.teleportAsync(player, location);
-        configs.ptp.put(player, new PlayerCooldown(configs));
     }
 
 }

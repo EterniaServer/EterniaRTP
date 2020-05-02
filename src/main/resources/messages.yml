@@ -10,6 +10,7 @@ econ:
   no-money: '&7Você não possui todo esse dinheiro&8.'
   give: '&7Seus &3%money% &7foram devolvidos&8.'
 rtp:
+  telep: '&7Aguarde você está se teleportando&8.'
   wait: '&7Você precisa esperar antes de poder se teleportar novamente&8.'
   worldb: '&7Esse mundo está proibido de usar &3RTP&8.'
   no-safe: '&7Nenhum terreno seguro encontrado&8.'
