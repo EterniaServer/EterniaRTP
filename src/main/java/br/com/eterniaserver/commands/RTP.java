@@ -1,5 +1,6 @@
 package br.com.eterniaserver.commands;
 
+import br.com.eterniaserver.EterniaRTP;
 import br.com.eterniaserver.config.Configs;
 import br.com.eterniaserver.config.Strings;
 import br.com.eterniaserver.methods.RTPPlayer;
@@ -9,16 +10,20 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.concurrent.TimeUnit;
+
 public class RTP implements CommandExecutor {
 
     private final RTPPlayer rtpPlayer;
     private final Strings strings;
     private final Configs configs;
+    private final EterniaRTP plugin;
 
-    public RTP(RTPPlayer rtpPlayer, Strings strings, Configs configs) {
+    public RTP(RTPPlayer rtpPlayer, Strings strings, Configs configs, EterniaRTP plugin) {
         this.rtpPlayer = rtpPlayer;
         this.strings = strings;
         this.configs = configs;
+        this.plugin = plugin;
     }
 
     @Override
@@ -29,7 +34,7 @@ public class RTP implements CommandExecutor {
                 configs.reload();
                 player.sendMessage(strings.putPrefix("server.reload"));
             } else if (args.length == 0 && player.hasPermission("eternia.rtp")) {
-                if (!configs.ptp.containsKey(player)) {
+                if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - plugin.rtp.get(player)) > configs.configs.getInt("server.cooldown")) {
                     if (configs.econ) {
                         if (configs.economy.has(player, configs.configs.getInt("server.amount"))) {
                             configs.economy.withdrawPlayer(player, configs.configs.getInt("server.amount"));
@@ -41,7 +46,7 @@ public class RTP implements CommandExecutor {
                         rtpPlayer.teleportPlayer(player);
                     }
                 } else {
-                    player.sendMessage(strings.putPrefix("rtp.wait"));
+                    player.sendMessage(strings.putPrefix("rtp.wait").replace("%time%", String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - plugin.rtp.get(player)))));
                 }
             } else {
                 player.sendMessage(strings.putPrefix("server.no-perm"));

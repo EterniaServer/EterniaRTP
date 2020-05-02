@@ -1,5 +1,6 @@
 package br.com.eterniaserver.methods;
 
+import br.com.eterniaserver.EterniaRTP;
 import br.com.eterniaserver.config.Configs;
 import br.com.eterniaserver.config.Strings;
 
@@ -16,13 +17,15 @@ public class RunRTP extends org.bukkit.scheduler.BukkitRunnable {
     private final int x, z;
     private final Configs configs;
     private final Strings strings;
+    private final EterniaRTP plugin;
 
-    public RunRTP(Player player, int x, int z, Configs configs, Strings strings) {
+    public RunRTP(Player player, int x, int z, Configs configs, Strings strings, EterniaRTP plugin) {
         this.player = player;
         this.x = x;
         this.z = z;
         this.configs = configs;
         this.strings = strings;
+        this.plugin = plugin;
     }
 
     @Override
@@ -33,7 +36,7 @@ public class RunRTP extends org.bukkit.scheduler.BukkitRunnable {
         boolean hasLand = false;
         while (!hasLand) {
             if (y <= 50) {
-                configs.ptp.remove(player);
+                plugin.rtp.remove(player);
                 player.sendMessage(strings.putPrefix("rtp.no-safe"));
                 if (configs.econ) {
                     configs.economy.depositPlayer(player, configs.configs.getInt("server.amount"));

@@ -2,21 +2,16 @@ package br.com.eterniaserver.config;
 
 import br.com.eterniaserver.EterniaRTP;
 
-import br.com.eterniaserver.methods.PlayerCooldown;
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 
 public class Configs {
-
-    public final HashMap<Player, PlayerCooldown> ptp = new HashMap<>();
 
     public boolean econ = false;
 

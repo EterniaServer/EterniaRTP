@@ -1,5 +1,6 @@
 package br.com.eterniaserver.methods;
 
+import br.com.eterniaserver.EterniaRTP;
 import br.com.eterniaserver.config.Configs;
 import br.com.eterniaserver.config.Strings;
 
@@ -13,10 +14,12 @@ public class RTPPlayer {
 
     private final Configs configs;
     private final Strings strings;
+    private final EterniaRTP plugin;
 
-    public RTPPlayer(Configs configs, Strings strings) {
+    public RTPPlayer(Configs configs, Strings strings, EterniaRTP plugin) {
         this.configs = configs;
         this.strings = strings;
+        this.plugin = plugin;
     }
 
     public void teleportPlayer(Player player) {
@@ -26,8 +29,8 @@ public class RTPPlayer {
             x = (int) (configs.configs.getInt("rtp.minx") + (configs.configs.getInt("rtp.maxx") - configs.configs.getInt("rtp.minx")) * rand.nextDouble());
             z = (int) (configs.configs.getInt("rtp.minz") + (configs.configs.getInt("rtp.maxz") - configs.configs.getInt("rtp.minz")) * rand.nextDouble());
             player.sendMessage(strings.putPrefix("rtp.telep"));
-            configs.ptp.put(player, new PlayerCooldown(configs));
-            PaperLib.getChunkAtAsync(player.getWorld(), x, z).thenRun(new RunRTP(player, x, z, configs, strings));
+            plugin.rtp.put(player, System.currentTimeMillis());
+            PaperLib.getChunkAtAsync(player.getWorld(), x, z).thenRun(new RunRTP(player, x, z, configs, strings, plugin));
         } else {
             player.sendMessage(strings.putPrefix("rtp.worldb"));
             if (configs.econ) {
