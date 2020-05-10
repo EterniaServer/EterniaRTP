@@ -16,20 +16,14 @@ import java.util.Objects;
 public class EterniaRTP extends JavaPlugin {
 
     private final Configs configs = new Configs(this);
-
     private final Strings strings = new Strings(configs);
-
     public final HashMap<Player, Long> rtp = new HashMap<>();
 
     @Override
     public void onEnable() {
-
         PaperLib.suggestPaper(this);
-
         vaultHook(this);
-
         Objects.requireNonNull(this.getCommand("rtp")).setExecutor(new RTP(strings, configs, this));
-
     }
 
     private void vaultHook(EterniaRTP plugin) {
