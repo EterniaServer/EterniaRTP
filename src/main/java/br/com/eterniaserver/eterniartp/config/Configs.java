@@ -17,8 +17,7 @@ public class Configs {
 
     public Economy economy;
 
-    public FileConfiguration configs;
-    public FileConfiguration messages;
+    public FileConfiguration configs, messages;
     private final EterniaRTP plugin;
 
     public Configs(EterniaRTP plugin) {
@@ -27,25 +26,16 @@ public class Configs {
     }
 
     public void reload() {
-
+        File messagesConfigFile = new File(plugin.getDataFolder(), "messages.yml");
         File configsConfigFile = new File(plugin.getDataFolder(), "config.yml");
-        if (!configsConfigFile.exists()) {
-            plugin.saveResource("config.yml", false);
-        }
+        if (!messagesConfigFile.exists()) plugin.saveResource("messages.yml", false);
+        if (!configsConfigFile.exists()) plugin.saveResource("config.yml", false);
+        
+        messages = new YamlConfiguration();
         configs = new YamlConfiguration();
         try {
-            configs.load(configsConfigFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-
-        File messagesConfigFile = new File(plugin.getDataFolder(), "messages.yml");
-        if (!messagesConfigFile.exists()) {
-            plugin.saveResource("messages.yml", false);
-        }
-        messages = new YamlConfiguration();
-        try {
             messages.load(messagesConfigFile);
+            configs.load(configsConfigFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
