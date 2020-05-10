@@ -34,6 +34,12 @@
         </executions>
         <configuration>
           <minimizeJar>true</minimizeJar>
+          <relocations>
+            <relocation>
+              <pattern>io.papermc.lib</pattern>
+              <shadedPattern>br.com.eterniaserver.eterniartp.paperlib</shadedPattern>
+            </relocation>
+          </relocations>
         </configuration>
       </plugin>
     </plugins>

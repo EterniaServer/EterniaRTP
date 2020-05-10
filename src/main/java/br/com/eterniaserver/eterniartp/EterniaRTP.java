@@ -1,11 +1,12 @@
-package br.com.eterniaserver;
+package br.com.eterniaserver.eterniartp;
 
-import br.com.eterniaserver.commands.RTP;
-import br.com.eterniaserver.config.Configs;
-import br.com.eterniaserver.config.Strings;
-import br.com.eterniaserver.dependencies.VaultHook;
-import br.com.eterniaserver.methods.RTPPlayer;
+import br.com.eterniaserver.eterniartp.commands.RTP;
+import br.com.eterniaserver.eterniartp.config.Configs;
+import br.com.eterniaserver.eterniartp.config.Strings;
+import br.com.eterniaserver.eterniartp.dependencies.VaultHook;
+
 import io.papermc.lib.PaperLib;
+
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,8 +16,9 @@ import java.util.Objects;
 public class EterniaRTP extends JavaPlugin {
 
     private final Configs configs = new Configs(this);
+
     private final Strings strings = new Strings(configs);
-    private final RTPPlayer rtpPlayer = new RTPPlayer(configs, strings, this);
+
     public final HashMap<Player, Long> rtp = new HashMap<>();
 
     @Override
@@ -26,7 +28,8 @@ public class EterniaRTP extends JavaPlugin {
 
         vaultHook(this);
 
-        Objects.requireNonNull(this.getCommand("rtp")).setExecutor(new RTP(rtpPlayer, strings, configs, this));
+        Objects.requireNonNull(this.getCommand("rtp")).setExecutor(new RTP(strings, configs, this));
+
     }
 
     private void vaultHook(EterniaRTP plugin) {

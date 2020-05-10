@@ -1,6 +1,6 @@
-package br.com.eterniaserver.config;
+package br.com.eterniaserver.eterniartp.config;
 
-import br.com.eterniaserver.EterniaRTP;
+import br.com.eterniaserver.eterniartp.EterniaRTP;
 
 import net.milkbowl.vault.economy.Economy;
 

@@ -1,4 +1,4 @@
-main: br.com.eterniaserver.EterniaRTP
+main: br.com.eterniaserver.eterniartp.EterniaRTP
 
 name: EterniaRTP
 version: '${project.version}'

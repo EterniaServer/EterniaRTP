@@ -1,4 +1,4 @@
-package br.com.eterniaserver.config;
+package br.com.eterniaserver.eterniartp.config;
 
 public class Strings {
 

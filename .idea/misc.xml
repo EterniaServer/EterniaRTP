@@ -10,6 +10,7 @@
     <pattern value="br.com.eterniaserver.commands.RTP" method="RTP" />
     <pattern value="br.com.eterniaserver.dependencies.VaultHook" />
     <pattern value="br.com.eterniaserver.dependencies.VaultHook" method="VaultHook" />
+    <pattern value="br.com.eterniaserver.eterniartp.dependencies.VaultHook" method="VaultHook" />
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MavenProjectsManager">
