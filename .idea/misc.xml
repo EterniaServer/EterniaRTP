@@ -11,6 +11,17 @@
     <pattern value="br.com.eterniaserver.dependencies.VaultHook" />
     <pattern value="br.com.eterniaserver.dependencies.VaultHook" method="VaultHook" />
     <pattern value="br.com.eterniaserver.eterniartp.dependencies.VaultHook" method="VaultHook" />
+    <pattern value="br.com.eterniaserver.eterniartp.EterniaRTP" />
+    <pattern value="br.com.eterniaserver.eterniartp.generic.Events" />
+    <pattern value="br.com.eterniaserver.eterniartp.eternialib.Files" />
+    <pattern value="br.com.eterniaserver.eterniartp.eternialib.Files" method="Files" />
+    <pattern value="br.com.eterniaserver.eterniartp.generic.Events" method="onAsyncPlayerPreLogin" />
+    <pattern value="br.com.eterniaserver.eterniartp.generic.RTP" method="onReload" />
+    <pattern value="br.com.eterniaserver.eterniartp.generic.RTP" method="onRTP" />
+    <pattern value="br.com.eterniaserver.eterniartp.generic.RTP" />
+    <pattern value="br.com.eterniaserver.eterniartp.generic.RTP" method="RTP" />
+    <pattern value="br.com.eterniaserver.eterniartp.eternialib.Tables" />
+    <pattern value="br.com.eterniaserver.eterniartp.eternialib.Tables" method="Tables" />
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MavenProjectsManager">

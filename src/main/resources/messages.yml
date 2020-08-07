@@ -1,12 +1,8 @@
 server:
   prefix: '&8[&aE&9R&8] '
-  only-player: '&7Somente jogadores podem utilizar esse comando&8.'
-  no-perm: '&7Você não possui permissão para isso&8.'
   reload: '&7Reiniciando configurações&8.'
+  load-data: '&3%module% &7carregados &3%amount% &7de arquivos&8.'
 econ:
-  vault-no: '&7Vault não encontrado&8.'
-  no-hook: '&7Nenhum plugin de economia encontrado&8.'
-  disable: '&7Modo sem dinheiro&8.'
   no-money: '&7Você não possui todo esse dinheiro&8.'
   give: '&7Seus &3%money% &7foram devolvidos&8.'
 rtp:

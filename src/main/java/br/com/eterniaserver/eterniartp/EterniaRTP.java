@@ -1,40 +1,69 @@
 package br.com.eterniaserver.eterniartp;
 
-import br.com.eterniaserver.eterniartp.commands.RTP;
-import br.com.eterniaserver.eterniartp.config.Configs;
-import br.com.eterniaserver.eterniartp.config.Strings;
-import br.com.eterniaserver.eterniartp.dependencies.VaultHook;
+import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eterniartp.eternialib.Files;
+import br.com.eterniaserver.eterniartp.generic.Events;
+import br.com.eterniaserver.eterniartp.generic.RTP;
+import br.com.eterniaserver.paperlib.PaperLib;
 
-import io.papermc.lib.PaperLib;
+import net.milkbowl.vault.economy.Economy;
 
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.HashMap;
-import java.util.Objects;
 
 public class EterniaRTP extends JavaPlugin {
 
-    private final Configs configs = new Configs(this);
+    private EFiles messages;
+    private Files files;
 
-    private final Strings strings = new Strings(configs);
+    public static final FileConfiguration serverConfig = new YamlConfiguration();
+    public static final FileConfiguration msgConfig = new YamlConfiguration();
 
-    public final HashMap<Player, Long> rtp = new HashMap<>();
+    private Economy econ;
 
     @Override
     public void onEnable() {
 
         PaperLib.suggestPaper(this);
 
-        vaultHook(this);
+        files = new Files(this);
 
-        Objects.requireNonNull(this.getCommand("rtp")).setExecutor(new RTP(strings, configs, this));
+        files.loadConfigs();
+        files.loadMessages();
+        files.loadTable();
+
+        messages = new EFiles(msgConfig);
+
+        vault();
+
+        this.getServer().getPluginManager().registerEvents(new Events(), this);
+        EterniaLib.getManager().registerCommand(new RTP(this));
 
     }
 
-    private void vaultHook(EterniaRTP plugin) {
-        new VaultHook(plugin, configs, strings);
+    public Files getFiles() {
+        return files;
     }
 
+    public EFiles getMessages() {
+        return messages;
+    }
+
+    public Economy getEcon() {
+        return econ;
+    }
+
+    public void vault() {
+        if (Bukkit.getServer().getPluginManager().getPlugin("Vault") != null) {
+            RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+            if (rsp != null) {
+                econ = rsp.getProvider();
+            }
+        }
+    }
 
 }

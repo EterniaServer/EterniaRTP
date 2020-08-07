@@ -2,6 +2,10 @@ server:
   money: true
   cooldown: 300
   amount: 5000
+
+sql:
+  table-rtp: 'er_rtp'
+
 rtp:
   minx: -2000
   maxx: 2000

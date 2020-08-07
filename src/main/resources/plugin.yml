@@ -5,8 +5,8 @@ version: '${project.version}'
 author: Yuri Nogueira
 description: Simple RTP Plugin.
 api-version: '1.13'
-softdepend: [Vault]
-commands:
-  rtp:
-    description: Teleporta aleatoriamente.
-    aliases: [randomteleport]
+depend:
+  - EterniaLib
+  - Vault
+softdepend:
+  - EterniaServer
