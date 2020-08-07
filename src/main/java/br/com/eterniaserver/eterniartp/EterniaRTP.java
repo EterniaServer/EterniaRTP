@@ -9,6 +9,8 @@ import br.com.eterniaserver.paperlib.PaperLib;
 
 import net.milkbowl.vault.economy.Economy;
 
+import org.bstats.bukkit.Metrics;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,6 +30,7 @@ public class EterniaRTP extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        new Metrics(this, 8446);
         PaperLib.suggestPaper(this);
 
         files = new Files(this);

@@ -122,7 +122,7 @@ public class RTP extends BaseCommand {
             final long time = System.currentTimeMillis();
             PaperLib.teleportAsync(player, location, PlayerTeleportEvent.TeleportCause.PLUGIN);
             Vars.rtp.put(UUIDFetcher.getUUIDOf(player.getName()), time);
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_TIME, Strings.TIME, time, Strings.UUID, UUIDFetcher.getUUIDOf(player.getName())));
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_TIME, Strings.TIME, time, Strings.UUID, UUIDFetcher.getUUIDOf(player.getName()).toString()));
         });
     }
 
