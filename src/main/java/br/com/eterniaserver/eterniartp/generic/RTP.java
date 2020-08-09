@@ -7,6 +7,7 @@ import br.com.eterniaserver.acf.annotation.Default;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniartp.Constants;
 import br.com.eterniaserver.eterniartp.EterniaRTP;
 import br.com.eterniaserver.eterniartp.Strings;

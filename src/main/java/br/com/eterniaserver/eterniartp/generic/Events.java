@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniartp.generic;
 
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniartp.Constants;
 
 import org.bukkit.event.EventHandler;
