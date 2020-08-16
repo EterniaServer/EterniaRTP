@@ -1,10 +1,11 @@
 package br.com.eterniaserver.eterniartp.eternialib;
 
-import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniartp.EterniaRTP;
 
+import br.com.eterniaserver.eterniartp.Strings;
 import org.bukkit.configuration.InvalidConfigurationException;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Files {
@@ -17,8 +18,13 @@ public class Files {
 
     public void loadConfigs() {
 
+        final String config = "config.yml";
+
+        final File file = new File(plugin.getDataFolder(), config);
+        if (!file.exists()) plugin.saveResource(config, false);
+
         try {
-            EterniaRTP.serverConfig.load(EFiles.fileLoad(plugin, "config.yml"));
+            EterniaRTP.serverConfig.load(file);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -27,8 +33,15 @@ public class Files {
 
     public void loadMessages() {
 
+        final String messages = "messages.yml";
+
+        final File file = new File(plugin.getDataFolder(), messages);
+        if (!file.exists()) plugin.saveResource(messages, false);
+
+
         try {
-            EterniaRTP.msgConfig.load(EFiles.fileLoad(plugin, "messages.yml"));
+            EterniaRTP.msgConfig.load(file);
+            Strings.reloadMessages(EterniaRTP.msgConfig);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }

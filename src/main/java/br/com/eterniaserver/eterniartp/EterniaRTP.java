@@ -1,6 +1,5 @@
 package br.com.eterniaserver.eterniartp;
 
-import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniartp.eternialib.Files;
 import br.com.eterniaserver.eterniartp.generic.Events;
@@ -19,7 +18,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class EterniaRTP extends JavaPlugin {
 
-    private EFiles messages;
     private Files files;
 
     public static final FileConfiguration serverConfig = new YamlConfiguration();
@@ -39,8 +37,6 @@ public class EterniaRTP extends JavaPlugin {
         files.loadMessages();
         files.loadTable();
 
-        messages = new EFiles(msgConfig);
-
         vault();
 
         this.getServer().getPluginManager().registerEvents(new Events(), this);
@@ -50,10 +46,6 @@ public class EterniaRTP extends JavaPlugin {
 
     public Files getFiles() {
         return files;
-    }
-
-    public EFiles getMessages() {
-        return messages;
     }
 
     public Economy getEcon() {
