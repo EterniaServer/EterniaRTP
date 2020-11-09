@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniartp.generic;
+package br.com.eterniaserver.eterniartp.core;
 
 import java.util.HashMap;
 import java.util.UUID;

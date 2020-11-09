@@ -1,32 +1,40 @@
 package br.com.eterniaserver.eterniartp;
 
+import br.com.eterniaserver.eterniartp.enums.ConfigStrings;
+import br.com.eterniaserver.eterniartp.enums.Messages;
+
+import org.bukkit.command.CommandSender;
+
+import java.io.File;
+
 public class Constants {
 
     private Constants() {
         throw new IllegalStateException("Utility class");
     }
 
-    public static final String MODULE = "%module%";
-    public static final String AMOUNT = "%amount%";
-    public static final String MONEY = "%money%";
-    public static final String COOLDOWN = "%time%";
+    public static final String DATA_LAYER_FOLDER_PATH = "plugins" + File.separator + "EterniaRTP";
+    public static final String DATA_LOCALE_FOLDER_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "locales";
+    public static final String CONFIG_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "config.yml";
+    public static final String MESSAGES_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "messages.yml";
+    public static final String COMMANDS_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "commands.yml";
 
-    public static final String TABLE_TIME = EterniaRTP.serverConfig.getString("sql.table-rtp");
-
-    public static String getQuerySelectAll(final String table) {
-        return "SELECT * FROM " + table + ";";
+    protected static void sendMessage(CommandSender sender, Messages messagesId, boolean prefix, String... args) {
+        sender.sendMessage(EterniaRTP.getMessage(messagesId, prefix, args));
     }
 
-    public static String getQueryCreateTable(final String table, final String values) {
-        return "CREATE TABLE IF NOT EXISTS " + table + " " + values + ";";
-    }
+    protected static String getMessage(Messages messagesId, boolean prefix, String[] messages, String... args) {
+        String message = messages[messagesId.ordinal()];
 
-    public static String getQueryUpdate(final String table, final String type, final Object value, final String type2, final Object value2) {
-        return "UPDATE " + table + " SET " + type + "='" + value + "' WHERE " + type2 + "='" + value2 + "';";
-    }
+        for (int i = 0; i < args.length; i++) {
+            message = message.replace("{" + i + "}", args[i]);
+        }
 
-    public static String getQueryInsert(final String table, final String type, final Object value) {
-        return "INSERT INTO " + table + " " + type + " VALUES " + value + ";";
+        if (prefix) {
+            return EterniaRTP.getString(ConfigStrings.SERVER_PREFIX) + message;
+        }
+
+        return message;
     }
 
 }
