@@ -84,7 +84,7 @@ public class EterniaRTP extends JavaPlugin {
     }
 
     public static void sendMessage(CommandSender sender, Messages messagesId, String... args) {
-        Constants.sendMessage(sender, messagesId, true, args);
+        Constants.sendMessage(sender, messagesId, args);
     }
 
     private void loadCommandsLocale() {

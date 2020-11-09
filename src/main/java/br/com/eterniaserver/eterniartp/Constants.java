@@ -19,8 +19,8 @@ public class Constants {
     public static final String MESSAGES_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "messages.yml";
     public static final String COMMANDS_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "commands.yml";
 
-    protected static void sendMessage(CommandSender sender, Messages messagesId, boolean prefix, String... args) {
-        sender.sendMessage(EterniaRTP.getMessage(messagesId, prefix, args));
+    protected static void sendMessage(CommandSender sender, Messages messagesId, String... args) {
+        sender.sendMessage(EterniaRTP.getMessage(messagesId, true, args));
     }
 
     protected static String getMessage(Messages messagesId, boolean prefix, String[] messages, String... args) {

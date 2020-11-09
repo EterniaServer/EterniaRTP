@@ -5,8 +5,8 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.queries.Select;
 import br.com.eterniaserver.eterniartp.EterniaRTP;
 import br.com.eterniaserver.eterniartp.core.APIRTP;
-
 import br.com.eterniaserver.eterniartp.enums.ConfigStrings;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 
 public class PlayerHandler implements Listener {
@@ -24,7 +25,7 @@ public class PlayerHandler implements Listener {
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
             while (resultSet.next()) {
-                APIRTP.put(UUIDFetcher.getUUIDOf(resultSet.getString("uuid")), resultSet.getLong("time"));
+                APIRTP.put(UUID.fromString(resultSet.getString("uuid")), resultSet.getLong("time"));
             }
         } catch (SQLException exception) {
             exception.printStackTrace();

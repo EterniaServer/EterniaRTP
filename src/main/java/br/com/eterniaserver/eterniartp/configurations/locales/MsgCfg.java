@@ -27,7 +27,7 @@ public class MsgCfg {
         this.addDefault(defaults, Messages.NOT_SAFE, "Nenhum local seguro encontrado$8, $7RTP cancelado$8.", null);
         this.addDefault(defaults, Messages.REFUND, "Você recebeu um reembolso de $3{0}$8.", "0: preço");
         this.addDefault(defaults, Messages.NO_MONEY, "Você não possui dinheiro suficiênte$8, $7você precisa de $3{0}$8.", "0: preço");
-        this.addDefault(defaults, Messages.WAIT, "Você será teleportado em $3{0} $7segundos$8,$7 aguarde$8.", "0: tempo");
+        this.addDefault(defaults, Messages.WAIT, "Aguarde $3{0} $7segundos$8,$7 para poder se teleportar$8.", "0: tempo");
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.MESSAGES_FILE_PATH));
 

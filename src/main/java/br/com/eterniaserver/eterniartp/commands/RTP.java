@@ -54,9 +54,9 @@ public class RTP extends BaseCommand {
         teleportPlayer(player);
     }
 
-    @Subcommand("%rtp_reload")
-    @Description("%rtp_reload_description")
-    @CommandPermission("%rtp_reload_perm")
+    @Subcommand("%reload")
+    @Description("%reload_description")
+    @CommandPermission("%reload_perm")
     public void onReload(CommandSender sender) {
         EterniaRTP.sendMessage(sender, Messages.RTP_RELOAD);
     }

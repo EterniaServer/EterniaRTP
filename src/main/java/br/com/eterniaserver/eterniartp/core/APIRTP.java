@@ -16,11 +16,12 @@ public interface APIRTP {
 
     static void checkAndPut(UUID uuid) {
         if (!Vars.rtp.containsKey(uuid)) {
+            Vars.rtp.put(uuid, System.currentTimeMillis());
+
             Insert insert = new Insert(EterniaRTP.getString(ConfigStrings.TABLE_RTP));
             insert.columns.set("uuid", "time");
             insert.values.set(uuid.toString(), System.currentTimeMillis());
             SQL.executeAsync(insert);
-            put(uuid, System.currentTimeMillis());
         }
     }
 
