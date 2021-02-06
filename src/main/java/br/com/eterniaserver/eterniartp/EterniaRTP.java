@@ -57,7 +57,7 @@ public class EterniaRTP extends JavaPlugin {
         new MsgCfg(messages);
         new TableCfg();
 
-        CommandManager.registerCommand(new RTP());
+        CommandManager.registerCommand(new RTP(Bukkit.getPluginManager().getPlugin("EterniaServer") != null));
 
         this.getServer().getPluginManager().registerEvents(new PlayerHandler(), this);
 

@@ -14,6 +14,9 @@ import br.com.eterniaserver.eterniartp.core.APIRTP;
 import br.com.eterniaserver.eterniartp.enums.ConfigBooleans;
 import br.com.eterniaserver.eterniartp.enums.ConfigIntegers;
 import br.com.eterniaserver.eterniartp.enums.Messages;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.objects.CommandToRun;
 import br.com.eterniaserver.paperlib.PaperLib;
 
 import org.bukkit.Location;
@@ -24,12 +27,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @CommandAlias("%rtp")
 public class RTP extends BaseCommand {
 
+    private final boolean hasEterniaServer;
+
     private final Random rand = new Random();
+
+    public RTP(boolean hasEterniaServer) {
+        this.hasEterniaServer = hasEterniaServer;
+    }
 
     @Default
     @Description("%rtp_description")
@@ -37,8 +47,9 @@ public class RTP extends BaseCommand {
     @CommandCompletion("reload")
     @CommandPermission("%rtp_perm")
     public void onRTP(Player player) {
-        final int time = (int) TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - APIRTP.getOrDefault(UUIDFetcher.getUUIDOf(player.getName())));
-        if (!(time > EterniaRTP.getInteger(ConfigIntegers.COOLDOWN))) {
+        final UUID uuid = player.getUniqueId();
+        final int time = (int) TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - APIRTP.getOrDefault(uuid));
+        if (time <= EterniaRTP.getInteger(ConfigIntegers.COOLDOWN)) {
             EterniaRTP.sendMessage(player, Messages.WAIT, String.valueOf(EterniaRTP.getInteger(ConfigIntegers.COOLDOWN) - time));
             return;
         }
@@ -48,7 +59,15 @@ public class RTP extends BaseCommand {
                 EterniaRTP.sendMessage(player, Messages.NO_MONEY);
                 return;
             }
-            EterniaRTP.getEcon().withdrawPlayer(player, EterniaRTP.getInteger(ConfigIntegers.AMOUNT));
+            
+            if (hasEterniaServer) {
+                EterniaServer.sendMessage(player, br.com.eterniaserver.eterniaserver.enums.Messages.COMMAND_COST, String.valueOf(EterniaRTP.getInteger(ConfigIntegers.AMOUNT)));
+                ServerRelated.putCommandToRun(uuid, new CommandToRun(() -> {
+                    EterniaRTP.getEcon().withdrawPlayer(player, EterniaRTP.getInteger(ConfigIntegers.AMOUNT));
+                    teleportPlayer(player);
+                }, System.currentTimeMillis()));
+                return;
+            }
         }
 
         teleportPlayer(player);

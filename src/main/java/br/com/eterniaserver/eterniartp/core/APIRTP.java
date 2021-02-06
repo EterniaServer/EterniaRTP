@@ -25,6 +25,10 @@ public interface APIRTP {
         }
     }
 
+    static void putWithoutUpdate(UUID uuid, long time) {
+        Vars.rtp.put(uuid, time);
+    }
+
     static void put(UUID uuid, long time) {
         Vars.rtp.put(uuid, time);
         Update update = new Update(EterniaRTP.getString(ConfigStrings.TABLE_RTP));

@@ -37,6 +37,11 @@
       <option name="url" value="https://raw.github.com/yurinogueira/EterniaLib/repository" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="local-repo" />
+      <option name="name" value="local-repo" />
+      <option name="url" value="file://C:\Users\yurin\Documents\Projetos\EterniaRTP" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="CodeMC" />
       <option name="name" value="CodeMC" />
       <option name="url" value="https://repo.codemc.org/repository/maven-public" />
