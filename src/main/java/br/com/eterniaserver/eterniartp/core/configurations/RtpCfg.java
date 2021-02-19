@@ -100,6 +100,11 @@ public class RtpCfg implements ReloadableConfiguration {
         outConfig.set("server.prefix", strings[Strings.SERVER_PREFIX.ordinal()]);
         outConfig.set("server.timing-bypass-perm", strings[Strings.PERM_TIMINGS_BYPASS.ordinal()]);
 
+        for (final Map.Entry<String, WorldHeight> entry : worldHeightMap.entrySet()) {
+            outConfig.set("world-heights." + entry.getKey() + ".min", entry.getValue().getMin());
+            outConfig.set("world-heights." + entry.getKey() + ".max", entry.getValue().getMax());
+        }
+
         outConfig.set("server.cooldown", integers[Integers.COOLDOWN.ordinal()]);
         outConfig.set("rtp.min.x", integers[Integers.MINX.ordinal()]);
         outConfig.set("rtp.min.z", integers[Integers.MINZ.ordinal()]);
@@ -108,8 +113,8 @@ public class RtpCfg implements ReloadableConfiguration {
 
         outConfig.set("eco.cost", doubles[Doubles.RTP_COST.ordinal()]);
 
-        outConfig.set("rtp.banned-worlds", bannedWorlds);
-        outConfig.set("rtp.unsafe-worlds", unsafeWorlds);
+        outConfig.set("rtp.banned-worlds", bannedWorlds.toArray());
+        outConfig.set("rtp.unsafe-worlds", unsafeWorlds.toArray());
 
         try {
             outConfig.save(Constants.RTP_FILE_PATH);

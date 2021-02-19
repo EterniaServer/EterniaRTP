@@ -34,6 +34,7 @@ public abstract class BaseRandomTeleport implements CommandConfirmable {
                     return;
                 }
 
+                location.setY(y);
                 if (location.getBlock().getType().equals(Material.AIR)) {
                     location.setY(y - 2);
                     if (!location.getBlock().getType().equals(Material.AIR)) {
