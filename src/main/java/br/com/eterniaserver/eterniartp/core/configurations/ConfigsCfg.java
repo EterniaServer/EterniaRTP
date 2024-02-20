@@ -1,95 +1,149 @@
 package br.com.eterniaserver.eterniartp.core.configurations;
 
-import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.SQL;
-import br.com.eterniaserver.eternialib.core.enums.ConfigurationCategory;
-import br.com.eterniaserver.eternialib.core.interfaces.ReloadableConfiguration;
-import br.com.eterniaserver.eternialib.core.queries.CreateTable;
-import br.com.eterniaserver.eternialib.core.queries.Select;
+import br.com.eterniaserver.eternialib.configuration.CommandLocale;
+import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
+import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
 import br.com.eterniaserver.eterniartp.Constants;
+import br.com.eterniaserver.eterniartp.EterniaRTP;
+import br.com.eterniaserver.eterniartp.core.WorldConfig;
 import br.com.eterniaserver.eterniartp.core.enums.Booleans;
+import br.com.eterniaserver.eterniartp.core.enums.Doubles;
 import br.com.eterniaserver.eterniartp.core.enums.Integers;
 import br.com.eterniaserver.eterniartp.core.enums.Strings;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class ConfigsCfg implements ReloadableConfiguration {
 
-    private final String[] strings;
-    private final int[] integers;
-    private final boolean[] booleans;
-    private final Map<UUID, Long> rtp;
+    private final EterniaRTP plugin;
 
-    public ConfigsCfg(final String[] strings,
-                      final int[] integers,
-                      final boolean[] booleans,
-                      final Map<UUID, Long> rtp) {
-        this.strings = strings;
-        this.integers = integers;
-        this.booleans = booleans;
-        this.rtp = rtp;
+    private final FileConfiguration inFile;
+    private final FileConfiguration outFile;
+
+    public ConfigsCfg(EterniaRTP plugin) {
+        this.plugin = plugin;
+
+        this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+        this.outFile = new YamlConfiguration();
+    }
+
+    @Override
+    public FileConfiguration inFileConfiguration() {
+        return inFile;
+    }
+
+    @Override
+    public FileConfiguration outFileConfiguration() {
+        return outFile;
+    }
+
+    @Override
+    public String[] messages() {
+        return new String[0];
+    }
+
+    @Override
+    public CommandLocale[] commandsLocale() {
+        return new CommandLocale[0];
     }
 
     @Override
     public ConfigurationCategory category() {
-        return ConfigurationCategory.WARNING_ADVICE;
+        return ConfigurationCategory.GENERIC;
+    }
+
+    @Override
+    public String getFolderPath() {
+        return Constants.DATA_LAYER_FOLDER_PATH;
+    }
+
+    @Override
+    public String getFilePath() {
+        return Constants.CONFIG_FILE_PATH;
     }
 
     @Override
     public void executeConfig() {
+        String[] strings = plugin.strings();;
+        double[] doubles = plugin.doubles();
+        int[] integers = plugin.integers();
+        boolean[] booleans = plugin.booleans();
 
-        // Load the configurations
-        final FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.CONFIG_FILE_PATH));
+        strings[Strings.TABLE_RTP.ordinal()] = inFile.getString("server.table-rtp", "er_rtp_times");
+        strings[Strings.SERVER_PREFIX.ordinal()] = inFile.getString("server.prefix", "<color:#555555>[<color:#34eb40>E<color:#3471eb>K<color:#555555>]<color:#AAAAAA> ");
+        strings[Strings.PERM_TIMINGS_BYPASS.ordinal()] = inFile.getString("server.timing-bypass-perm", "eternia.timings.bypass");
 
-        strings[Strings.TABLE_RTP.ordinal()] = config.getString("server.table-rtp", "er_rtp");
-        integers[Integers.SERVER_TICK.ordinal()] = config.getInt("server.tick", 1);
-        booleans[Booleans.ECON.ordinal()] = config.getBoolean("eco.enabled", true);
+        doubles[Doubles.RTP_COST.ordinal()] = inFile.getInt("eco.cost", 50);
 
-        // Save the configurations
-        final FileConfiguration outConfig = new YamlConfiguration();
+        integers[Integers.COOLDOWN.ordinal()] = inFile.getInt("server.cooldown", 300);
+        integers[Integers.TELEPORT_DELAY.ordinal()] = inFile.getInt("teleport-delay", 5);
 
-        outConfig.set("server.table-rtp", strings[Strings.TABLE_RTP.ordinal()]);
-        outConfig.set("server.tick", integers[Integers.SERVER_TICK.ordinal()]);
-        outConfig.set("eco.enabled", booleans[Booleans.ECON.ordinal()]);
+        booleans[Booleans.ECON.ordinal()] = inFile.getBoolean("eco.enabled", true);
 
-        try {
-            outConfig.save(Constants.CONFIG_FILE_PATH);
-        } catch (IOException exception) {
-            exception.printStackTrace();
+        List<String> tempBannedWorlds = inFile.getStringList("rtp.banned-worlds");
+        List<String> tempUnsafeWorlds = inFile.getStringList("rtp.unsafe-worlds");
+
+        if (tempBannedWorlds.isEmpty()) {
+            tempBannedWorlds.add("world_evento");
+        }
+        plugin.bannedWorlds().clear();
+        plugin.bannedWorlds().addAll(tempBannedWorlds);
+
+        if (tempUnsafeWorlds.isEmpty()) {
+            tempUnsafeWorlds.add("world_nether");
+            tempUnsafeWorlds.add("world_the_end");
+        }
+        plugin.unsafeWorlds().clear();
+        plugin.unsafeWorlds().addAll(tempUnsafeWorlds);
+
+        plugin.worldConfigMap().clear();
+        ConfigurationSection configurationSection = inFile.getConfigurationSection("worlds-configs");
+        if (configurationSection != null) {
+            for (String key : configurationSection.getKeys(false)) {
+                plugin.worldConfigMap().put(
+                        key,
+                        new WorldConfig(
+                                inFile.getInt("worlds-configs." + key + ".min.y", 64),
+                                inFile.getInt("worlds-configs." + key + ".max.y", 196),
+                                inFile.getInt("worlds-configs." + key + ".min.x", -15000),
+                                inFile.getInt("worlds-configs." + key + ".max.x", 15000),
+                                inFile.getInt("worlds-configs." + key + ".min.z", -15000),
+                                inFile.getInt("worlds-configs." + key + ".max.z", 15000)
+                        )
+                );
+            }
         }
 
+        for (Map.Entry<String, WorldConfig> entry : plugin.worldConfigMap().entrySet()) {
+            outFile.set("worlds-configs." + entry.getKey() + ".min.y", entry.getValue().minY());
+            outFile.set("worlds-configs." + entry.getKey() + ".max.y", entry.getValue().maxY());
+            outFile.set("worlds-configs." + entry.getKey() + ".min.x", entry.getValue().minX());
+            outFile.set("worlds-configs." + entry.getKey() + ".max.x", entry.getValue().maxX());
+            outFile.set("worlds-configs." + entry.getKey() + ".min.z", entry.getValue().minZ());
+            outFile.set("worlds-configs." + entry.getKey() + ".max.z", entry.getValue().maxZ());
+        }
+
+        outFile.set("eco.cost", doubles[Doubles.RTP_COST.ordinal()]);
+
+        outFile.set("rtp.banned-worlds", plugin.bannedWorlds().toArray());
+        outFile.set("rtp.unsafe-worlds", plugin.unsafeWorlds().toArray());
+
+        outFile.set("server.table-rtp", strings[Strings.TABLE_RTP.ordinal()]);
+        outFile.set("server.prefix", strings[Strings.SERVER_PREFIX.ordinal()]);
+        outFile.set("server.timing-bypass-perm", strings[Strings.PERM_TIMINGS_BYPASS.ordinal()]);
+
+        outFile.set("eco.enabled", booleans[Booleans.ECON.ordinal()]);
+
+        outFile.set("server.cooldown", integers[Integers.COOLDOWN.ordinal()]);
+        outFile.set("teleport-delay", integers[Integers.TELEPORT_DELAY.ordinal()]);
     }
 
     @Override
-    public void executeCritical() {
-        final CreateTable createTable;
-        if (EterniaLib.getMySQL()) {
-            createTable = new CreateTable(strings[Strings.TABLE_RTP.ordinal()]);
-            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "time BIGINT(20)");
-        } else {
-            createTable = new CreateTable(strings[Strings.TABLE_RTP.ordinal()]);
-            createTable.columns.set("uuid VARCHAR(36)", "time INTEGER");
-        }
-        SQL.execute(createTable);
-
-        try (final Connection connection = SQL.getConnection();
-             final PreparedStatement preparedStatement = connection.prepareStatement(new Select(strings[Strings.TABLE_RTP.ordinal()]).queryString());
-             final ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                rtp.put(UUID.fromString(resultSet.getString("uuid")), resultSet.getLong("time"));
-            }
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-    }
+    public void executeCritical() { }
 }

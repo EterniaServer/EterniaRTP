@@ -1,12 +1,12 @@
-main: br.com.eterniaserver.eterniartp.EterniaRTP
-
 name: EterniaRTP
-version: '${project.version}'
-author: Yuri Nogueira
-description: Simple RTP Plugin.
-api-version: '1.13'
+version: '${version}'
+main: br.com.eterniaserver.eterniartp.EterniaRTP
+dev-url: https://github.com/EterniaServer/EterniaRTP
+api-version: 1.20
 depend:
   - EterniaLib
-  - Vault
 softdepend:
-  - EterniaServer
+  - Vault
+author: Yuri Nogueira
+description: Simple Random Teleport Plugin
+website: www.eterniaserver.com.br

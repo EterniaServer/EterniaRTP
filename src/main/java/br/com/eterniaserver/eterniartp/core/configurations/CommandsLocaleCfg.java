@@ -1,95 +1,105 @@
 package br.com.eterniaserver.eterniartp.core.configurations;
 
-import br.com.eterniaserver.eternialib.core.baseobjects.CommandLocale;
+import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.configuration.CommandLocale;
+import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
+import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
 import br.com.eterniaserver.eterniartp.Constants;
 import br.com.eterniaserver.eterniartp.core.enums.Commands;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
 
-public class CommandsLocaleCfg {
+
+public class CommandsLocaleCfg implements ReloadableConfiguration {
 
     private final CommandLocale[] commandLocales;
 
-    private final String[] name;
-    private final String[] syntax;
-    private final String[] descriptions;
-    private final String[] perms;
-    private final String[] aliases;
+    private final FileConfiguration inFile;
+    private final FileConfiguration outFile;
 
     public CommandsLocaleCfg() {
-        this.name = new String[Commands.values().length];
-        this.syntax = new String[Commands.values().length];
-        this.descriptions = new String[Commands.values().length];
-        this.perms = new String[Commands.values().length];
-        this.aliases = new String[Commands.values().length];
         this.commandLocales = new CommandLocale[Commands.values().length];
 
-        this.addDefault(Commands.RTP, "rtp", "eternia.rtp", null, " Teleporte-se para um local randomizado");
-        this.addDefault(Commands.RTP_HELP, "help", "eternia.help", " <página>", " Receba ajuda para o sistema de RTP");
+        this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+        this.outFile = new YamlConfiguration();
+    }
 
-        // Load and save the configurations
-        final FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.COMMANDS_FILE_PATH));
+    @Override
+    public FileConfiguration inFileConfiguration() {
+        return inFile;
+    }
 
-        for (final Commands entry : Commands.values()) {
-            final CommandLocale commandLocale = commandLocales[entry.ordinal()];
+    @Override
+    public FileConfiguration outFileConfiguration() {
+        return outFile;
+    }
 
-            this.name[entry.ordinal()] = config.getString(entry.name() + ".name", commandLocale.name);
-            config.set(entry.name() + ".name", this.name[entry.ordinal()]);
+    @Override
+    public String getFolderPath() {
+        return Constants.DATA_LOCALE_FOLDER_PATH;
+    }
 
-            if (commandLocale.syntax != null) {
-                this.syntax[entry.ordinal()] = config.getString(entry.name() + ".syntax", commandLocale.syntax);
-                config.set(entry.name() + ".syntax", this.syntax[entry.ordinal()]);
-            }
+    @Override
+    public String getFilePath() {
+        return Constants.COMMANDS_FILE_PATH;
+    }
 
-            this.descriptions[entry.ordinal()] = config.getString(entry.name() + ".description", commandLocale.description);
-            config.set(entry.name() + ".description", this.descriptions[entry.ordinal()]);
+    @Override
+    public String[] messages() {
+        return new String[0];
+    }
 
-            this.perms[entry.ordinal()] = config.getString(entry.name() + ".perm", commandLocale.perm);
-            config.set(entry.name() + ".perm", commandLocale.perm);
+    @Override
+    public CommandLocale[] commandsLocale() {
+        return commandLocales;
+    }
 
-            if (commandLocale.aliases != null) {
-                this.aliases[entry.ordinal()] = config.getString(entry.name() + ".aliases", commandLocale.aliases);
-                config.set(entry.name() + ".aliases", this.aliases[entry.ordinal()]);
-            }
+    @Override
+    public ConfigurationCategory category() {
+        return ConfigurationCategory.BLOCKED;
+    }
 
+    @Override
+    public void executeConfig() { }
+
+    @Override
+    public void executeCritical() {
+        addCommandLocale(
+                Commands.RTP,
+                new CommandLocale(
+                        "rtp",
+                        null,
+                        " Teleporte-se para um local randomizado",
+                        "eternia.rtp",
+                        null
+                )
+        );
+        addCommandLocale(
+                Commands.RTP_HELP,
+                new CommandLocale(
+                        "help",
+                        " <página>",
+                        " Receba ajuda para o sistema de RTP",
+                        "eternia.rtp",
+                        null
+                )
+        );
+
+        loadCommandsLocale();
+    }
+
+    private void loadCommandsLocale() {
+        for (Commands command : Commands.values()) {
+            CommandLocale commandLocale = commandsLocale()[command.ordinal()];
+            EterniaLib.getCmdManager().getCommandReplacements().addReplacements(
+                    command.name().toLowerCase(), commandLocale.name(),
+                    command.name().toLowerCase() + "_DESCRIPTION", commandLocale.description(),
+                    command.name().toLowerCase() + "_PERM", commandLocale.perm(),
+                    command.name().toLowerCase() + "_SYNTAX", commandLocale.syntax(),
+                    command.name().toLowerCase() + "_ALIASES", commandLocale.aliases()
+            );
         }
-
-        new File(Constants.DATA_LOCALE_FOLDER_PATH).mkdir();
-
-        try {
-            config.save(Constants.COMMANDS_FILE_PATH);
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-
     }
-
-    private void addDefault(final Commands id, final String name, final String perm, final String syntax, final String description) {
-        commandLocales[id.ordinal()] = new CommandLocale(name, syntax, description, perm, null);
-    }
-
-    public String getName(Commands id) {
-        return name[id.ordinal()];
-    }
-
-    public String getSyntax(Commands id) {
-        return syntax[id.ordinal()] != null ? syntax[id.ordinal()] : "";
-    }
-
-    public String getDescription(Commands id) {
-        return descriptions[id.ordinal()];
-    }
-
-    public String getPerm(Commands id) {
-        return perms[id.ordinal()];
-    }
-
-    public String getAliases(Commands id) {
-        return aliases[id.ordinal()] != null ? aliases[id.ordinal()] : "";
-    }
-
 }

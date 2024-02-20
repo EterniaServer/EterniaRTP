@@ -65,8 +65,9 @@ java {
 dependencies {
     compileOnly("io.papermc.paper", "paper-api", "1.20.4-R0.1-SNAPSHOT")
     compileOnly("br.com.eterniaserver", "eternialib", "4.0.6")
-    compileOnly("maven.modrinth", "pl3xmap", "1.20.4-483")
+    compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
     implementation("org.bstats", "bstats-bukkit", "3.0.0")
+    testImplementation("com.github.MilkBowl", "VaultAPI", "1.7")
     testImplementation("io.papermc.paper", "paper-api", "1.20.4-R0.1-SNAPSHOT")
     testImplementation("org.junit.jupiter", "junit-jupiter", "5.9.2")
     testImplementation("org.mockito", "mockito-inline", "5.2.0")
