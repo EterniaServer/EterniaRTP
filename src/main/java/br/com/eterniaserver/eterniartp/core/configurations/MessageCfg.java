@@ -54,12 +54,12 @@ public class MessageCfg implements ReloadableConfiguration {
 
     @Override
     public String getFolderPath() {
-        return Constants.DATA_LAYER_FOLDER_PATH;
+        return Constants.DATA_LOCALE_FOLDER_PATH;
     }
 
     @Override
     public String getFilePath() {
-        return Constants.CONFIG_FILE_PATH;
+        return Constants.MESSAGES_FILE_PATH;
     }
 
     @Override
