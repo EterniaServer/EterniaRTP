@@ -52,7 +52,7 @@ public class RTP extends BaseCommand {
     @CommandPermission("%RTP_PERM")
     public void onRTP(Player player) {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            if (plugin.getBoolean(Booleans.ECON) && economy.has(player, plugin.getDouble(Doubles.RTP_COST))) {
+            if (plugin.getBoolean(Booleans.ECON) && !economy.has(player, plugin.getDouble(Doubles.RTP_COST))) {
                 plugin.sendMiniMessages(player, Messages.ECO_NO_MONEY, String.valueOf(plugin.getDouble(Doubles.RTP_COST)));
                 return;
             }
