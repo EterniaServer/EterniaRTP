@@ -76,7 +76,7 @@ public class ConfigsCfg implements ReloadableConfiguration {
         boolean[] booleans = plugin.booleans();
 
         strings[Strings.TABLE_RTP.ordinal()] = inFile.getString("server.table-rtp", "er_rtp_times");
-        strings[Strings.SERVER_PREFIX.ordinal()] = inFile.getString("server.prefix", "<color:#555555>[<color:#34eb40>E<color:#3471eb>K<color:#555555>]<color:#AAAAAA> ");
+        strings[Strings.SERVER_PREFIX.ordinal()] = inFile.getString("server.prefix", "<color:#555555>[<color:#34eb40>E<color:#3471eb>R<color:#555555>]<color:#AAAAAA> ");
         strings[Strings.PERM_TIMINGS_BYPASS.ordinal()] = inFile.getString("server.timing-bypass-perm", "eternia.timings.bypass");
 
         doubles[Doubles.RTP_COST.ordinal()] = inFile.getInt("eco.cost", 50);
