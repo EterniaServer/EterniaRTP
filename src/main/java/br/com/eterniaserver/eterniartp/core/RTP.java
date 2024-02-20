@@ -64,7 +64,7 @@ public class RTP extends BaseCommand {
             if (rtpTime.getUuid() == null) {
                 rtpTime.setUuid(player.getUniqueId());
                 rtpTime.setLastRTP(new Timestamp(
-                        System.currentTimeMillis() - TimeUnit.SECONDS.toMillis(secondsCooldown + 11)
+                        System.currentTimeMillis() - TimeUnit.SECONDS.toMillis(secondsCooldown + 10)
                 ));
                 EterniaLib.getDatabase().insert(RTPTime.class, rtpTime);
             }
@@ -74,7 +74,7 @@ public class RTP extends BaseCommand {
             int cooldown = (int) (actualTime - lastUse);
 
             if (cooldown < secondsCooldown) {
-                plugin.sendMiniMessages(player, Messages.PLAYER_IN_COOLDOWN, String.valueOf(cooldown));
+                plugin.sendMiniMessages(player, Messages.PLAYER_IN_COOLDOWN, String.valueOf(secondsCooldown - cooldown));
                 return;
             }
 
