@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniartp.core.enums;
 
 public enum Messages {
+    RTP_PREFIX,
     BANNED_WORLD,
     UNSAFE_WORLD,
     ECO_NO_MONEY,

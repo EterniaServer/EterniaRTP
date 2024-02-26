@@ -1,10 +1,9 @@
 package br.com.eterniaserver.eterniartp.core.configurations;
 
-import br.com.eterniaserver.eternialib.configuration.CommandLocale;
-import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
+import br.com.eterniaserver.eternialib.chat.MessageMap;
 import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.configuration.interfaces.MsgConfiguration;
 import br.com.eterniaserver.eterniartp.Constants;
-import br.com.eterniaserver.eterniartp.EterniaRTP;
 import br.com.eterniaserver.eterniartp.core.enums.Messages;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,16 +11,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
-public class MessageCfg implements ReloadableConfiguration {
+public class MessageCfg implements MsgConfiguration<Messages> {
 
-    private final String[] messages;
+    private final MessageMap<Messages, String> messages = new MessageMap<>(Messages.class, Messages.RTP_PREFIX);
 
     private final FileConfiguration inFile;
     private final FileConfiguration outFile;
 
-    public MessageCfg(EterniaRTP plugin) {
-        this.messages = plugin.messages();
-
+    public MessageCfg() {
         this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
         this.outFile = new YamlConfiguration();
     }
@@ -38,13 +35,8 @@ public class MessageCfg implements ReloadableConfiguration {
     }
 
     @Override
-    public String[] messages() {
+    public MessageMap<Messages, String> messages() {
         return messages;
-    }
-
-    @Override
-    public CommandLocale[] commandsLocale() {
-        return new CommandLocale[0];
     }
 
     @Override
@@ -64,24 +56,25 @@ public class MessageCfg implements ReloadableConfiguration {
 
     @Override
     public void executeConfig() {
-        addMessage(Messages.BANNED_WORLD, "O RTP é proibido no <color:#>{0}<color:#555555>.", "0: nome do mundo");
-        addMessage(Messages.UNSAFE_WORLD, "O RTP no <color:#00aaaa>{0} <color:#aaaaaa>não é seguro<color:#555555>, <color:#aaaaaa>deseja continuar<color:#555555>?", "0: nome do mundo");
+        addMessage(Messages.RTP_PREFIX, "#555555[#34eb40E#3471ebR#555555]#AAAAAA ");
+        addMessage(Messages.BANNED_WORLD, "O RTP é proibido no #{0}#555555.", "0: nome do mundo");
+        addMessage(Messages.UNSAFE_WORLD, "O RTP no #00aaaa{0} #aaaaaanão é seguro#555555, #aaaaaadeseja continuar#555555?", "0: nome do mundo");
 
-        addMessage(Messages.ECO_DISABLED, "<color:#00aaaa>Vault <color:#aaaaaa>não encontrado ou integração desabilitada<color:#555555>.");
-        addMessage(Messages.ECO_PAY_RTP, "Irá custar <color:#00aaaa>{0} <color:#aaaaaa>para utilizar o random teleport<color:#555555>.", "0: custo do comando");
-        addMessage(Messages.ECO_FREE_RTP, "Se teleportando de graça<color:#555555>, <color:#aaaaaa>para aceitar utilize <color:#ffaa00>/command accept <color:#aaaaaa>ou <color:#ffaa00>/command deny<color:#aaaaaa> para negar<color:#555555>.");
-        addMessage(Messages.ECO_NO_MONEY, "Você não possui dinheiro suficiênte para isso<color:#555555>, <color:#aaaaaa>você precisa de <color:#00aaaa>{0}<color:#555555>.", "0: custo do comando");
+        addMessage(Messages.ECO_DISABLED, "#00aaaaVault #aaaaaanão encontrado ou integração desabilitada#555555.");
+        addMessage(Messages.ECO_PAY_RTP, "Irá custar #00aaaa{0} #aaaaaapara utilizar o random teleport#555555.", "0: custo do comando");
+        addMessage(Messages.ECO_FREE_RTP, "Se teleportando de graça#555555, #aaaaaapara aceitar utilize #ffaa00/command accept #aaaaaaou #ffaa00/command deny#aaaaaa para negar#555555.");
+        addMessage(Messages.ECO_NO_MONEY, "Você não possui dinheiro suficiênte para isso#555555, #aaaaaavocê precisa de #00aaaa{0}#555555.", "0: custo do comando");
 
-        addMessage(Messages.MOVED, "Você se moveu o seu teleporte foi cancelado<color:#555555>.");
-        addMessage(Messages.PLAYER_IN_COOLDOWN, "Você ainda não pode utilizar esse comando<color:#555555>, <color:#aaaaaa>aguarde <color:#00aaaa>{0} segundos<color:#555555>.", "0: cooldown");
+        addMessage(Messages.MOVED, "Você se moveu o seu teleporte foi cancelado#555555.");
+        addMessage(Messages.PLAYER_IN_COOLDOWN, "Você ainda não pode utilizar esse comando#555555, #aaaaaaaguarde #00aaaa{0} segundos#555555.", "0: cooldown");
 
-        addMessage(Messages.RTP_TELEPORTING, "Você será teleportado em breve<color:#555555>.");
-        addMessage(Messages.RTP_STARTING, "Você será teleportado em breve<color:#555555>.");
-        addMessage(Messages.RTP_NO_SAFE, "Não foi encontrado um local seguro<color:#555555>, <color:#aaaaaa>tente novamente<color:#555555>.");
-        addMessage(Messages.RTP_NO_SAFE_REFUND, "Não foi encontrado um local seguro<color:#555555>, <color:#aaaaaa>seu dinheiro não foi cobrado<color:#555555>, <color:#aaaaaa>tente novamente<color:#555555>.");
-        addMessage(Messages.RTP_ALREADY_IN_TIMING, "Você já está em processo de teleport<color:#555555>.");
+        addMessage(Messages.RTP_TELEPORTING, "Você será teleportado em breve#555555.");
+        addMessage(Messages.RTP_STARTING, "Você será teleportado em breve#555555.");
+        addMessage(Messages.RTP_NO_SAFE, "Não foi encontrado um local seguro#555555, #aaaaaatente novamente#555555.");
+        addMessage(Messages.RTP_NO_SAFE_REFUND, "Não foi encontrado um local seguro#555555, #aaaaaaseu dinheiro não foi cobrado#555555, #aaaaaatente novamente#555555.");
+        addMessage(Messages.RTP_ALREADY_IN_TIMING, "Você já está em processo de teleport#555555.");
         addMessage(Messages.RTP_ALREADY_IN_CONFIRMATION,
-                "Você já está em um processo de confirmação<color:#555555>."
+                "Você já está em um processo de confirmação#555555."
         );
     }
 

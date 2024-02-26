@@ -115,7 +115,7 @@ public class Utils {
             this.plugin = plugin;
             this.sender = sender;
             this.runnable = runnable;
-            this.message = plugin.getMessage(Messages.RTP_TELEPORTING);
+            this.message = EterniaLib.getChatCommons().getMessage(Messages.RTP_TELEPORTING);
         }
 
         public static void addTeleport(EterniaRTP plugin, Player player, Economy economy) {
@@ -131,7 +131,7 @@ public class Utils {
             );
 
             if (!EterniaLib.getAdvancedCmdManager().addTimedCommand(teleportCommand)) {
-                plugin.sendMiniMessages(player, Messages.RTP_ALREADY_IN_TIMING);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.RTP_ALREADY_IN_TIMING);
             }
         }
 
@@ -142,7 +142,7 @@ public class Utils {
                 Messages failedMessage = economyEnable ? Messages.RTP_NO_SAFE_REFUND : Messages.RTP_NO_SAFE;
 
                 if (tries == 0) {
-                    plugin.sendMiniMessages(sender, failedMessage);
+                    EterniaLib.getChatCommons().sendMessage(sender, failedMessage);
                     return;
                 }
 

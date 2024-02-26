@@ -35,11 +35,10 @@ public class Manager {
         try {
             Entity<RTPTime> rtpTimeEntity = new Entity<>(RTPTime.class);
 
-            EterniaLib.addTableName("%eternia_rtp_table%", plugin.getString(Strings.TABLE_RTP));
-
+            EterniaLib.getDatabase().addTableName("%eternia_rtp_table%", plugin.getString(Strings.TABLE_RTP));
             EterniaLib.getDatabase().register(RTPTime.class, rtpTimeEntity);
         } catch (Exception exception) {
-            EterniaLib.registerLog("EE-742-RTPTime");
+            plugin.getLogger().warning(exception.getMessage());
             return;
         }
 
@@ -51,26 +50,18 @@ public class Manager {
 
     private void loadConfigurations() {
         ConfigsCfg configsCfg = new ConfigsCfg(plugin);
-        MessageCfg messageCfg = new MessageCfg(plugin);
+        MessageCfg messageCfg = new MessageCfg();
         CommandsLocaleCfg commandsLocaleCfg = new CommandsLocaleCfg();
 
-        EterniaLib.registerConfiguration("eterniartp", "config", configsCfg);
-        EterniaLib.registerConfiguration("eterniartp", "messages", messageCfg);
-        EterniaLib.registerConfiguration("eterniartp", "commands", commandsLocaleCfg);
-
-        configsCfg.executeConfig();
-        messageCfg.executeConfig();
-        commandsLocaleCfg.executeCritical();
-
-        configsCfg.saveConfiguration(true);
-        messageCfg.saveConfiguration(true);
-        commandsLocaleCfg.saveConfiguration(true);
+        EterniaLib.getCfgManager().registerConfiguration("eterniartp", "config", true, configsCfg);
+        EterniaLib.getCfgManager().registerConfiguration("eterniartp", "messages", true, messageCfg);
+        EterniaLib.getCfgManager().registerConfiguration("eterniartp", "commands", true, commandsLocaleCfg);
     }
 
     private void loadVault() {
         Optional<Plugin> optionalPlugin = Optional.ofNullable(plugin.getServer().getPluginManager().getPlugin("Vault"));
         if (optionalPlugin.isEmpty()) {
-            plugin.booleans()[Booleans.ECON.ordinal()] = false;
+            plugin.booleans().put(Booleans.ECON, false);
             return;
         }
 
@@ -78,7 +69,7 @@ public class Manager {
                 plugin.getServer().getServicesManager().getRegistration(Economy.class)
         );
         if (registeredServiceProviderOptional.isEmpty()) {
-            plugin.booleans()[Booleans.ECON.ordinal()] = false;
+            plugin.booleans().put(Booleans.ECON, false);
             return;
         }
 

@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.database.annotations.DataField;
 import br.com.eterniaserver.eternialib.database.annotations.PrimaryKeyField;
 import br.com.eterniaserver.eternialib.database.annotations.Table;
 import br.com.eterniaserver.eternialib.database.enums.FieldType;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

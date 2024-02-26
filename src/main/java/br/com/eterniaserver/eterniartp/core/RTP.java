@@ -13,6 +13,7 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
 
+import br.com.eterniaserver.eternialib.chat.MessageOptions;
 import br.com.eterniaserver.eterniartp.EterniaRTP;
 import br.com.eterniaserver.eterniartp.core.enums.Booleans;
 import br.com.eterniaserver.eterniartp.core.enums.Doubles;
@@ -53,7 +54,8 @@ public class RTP extends BaseCommand {
     public void onRTP(Player player) {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             if (plugin.getBoolean(Booleans.ECON) && !economy.has(player, plugin.getDouble(Doubles.RTP_COST))) {
-                plugin.sendMiniMessages(player, Messages.ECO_NO_MONEY, String.valueOf(plugin.getDouble(Doubles.RTP_COST)));
+                MessageOptions options = new MessageOptions(String.valueOf(plugin.getDouble(Doubles.RTP_COST)));
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_NO_MONEY, options);
                 return;
             }
 
@@ -74,18 +76,21 @@ public class RTP extends BaseCommand {
             int cooldown = (int) (actualTime - lastUse);
 
             if (cooldown < secondsCooldown) {
-                plugin.sendMiniMessages(player, Messages.PLAYER_IN_COOLDOWN, String.valueOf(secondsCooldown - cooldown));
+                MessageOptions options = new MessageOptions(String.valueOf(secondsCooldown - cooldown));
+                EterniaLib.getChatCommons().sendMessage(player, Messages.PLAYER_IN_COOLDOWN, options);
                 return;
             }
 
             String worldName = player.getWorld().getName();
             if (plugin.worldIsBanned(worldName)) {
-                plugin.sendMiniMessages(player, Messages.BANNED_WORLD, worldName);
+                MessageOptions options = new MessageOptions(worldName);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.BANNED_WORLD, options);
                 return;
             }
 
             if (plugin.worldIsUnsafe(worldName)) {
-                plugin.sendMiniMessages(player, Messages.UNSAFE_WORLD, worldName);
+                MessageOptions options = new MessageOptions(worldName);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.UNSAFE_WORLD, options);
             }
 
             Utils.TeleportCommand teleportCommand = new Utils.TeleportCommand(
@@ -94,16 +99,17 @@ public class RTP extends BaseCommand {
 
             boolean result = EterniaLib.getAdvancedCmdManager().addConfirmationCommand(teleportCommand);
             if (!result) {
-                plugin.sendMiniMessages(player, Messages.RTP_ALREADY_IN_CONFIRMATION);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.RTP_ALREADY_IN_CONFIRMATION);
                 return;
             }
 
             if (!plugin.getBoolean(Booleans.ECON)) {
-                plugin.sendMiniMessages(player, Messages.ECO_FREE_RTP);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_FREE_RTP);
                 return;
             }
 
-            plugin.sendMiniMessages(player, Messages.ECO_PAY_RTP, String.valueOf(plugin.getDouble(Doubles.RTP_COST)));
+            MessageOptions options = new MessageOptions(String.valueOf(plugin.getDouble(Doubles.RTP_COST)));
+            EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_PAY_RTP, options);
         });
     }
 

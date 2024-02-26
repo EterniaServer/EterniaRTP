@@ -1,8 +1,7 @@
 package br.com.eterniaserver.eterniartp.core.configurations;
 
-import br.com.eterniaserver.eternialib.configuration.CommandLocale;
-import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
 import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.configuration.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniartp.Constants;
 import br.com.eterniaserver.eterniartp.EterniaRTP;
 import br.com.eterniaserver.eterniartp.core.WorldConfig;
@@ -16,6 +15,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,16 +44,6 @@ public class ConfigsCfg implements ReloadableConfiguration {
     }
 
     @Override
-    public String[] messages() {
-        return new String[0];
-    }
-
-    @Override
-    public CommandLocale[] commandsLocale() {
-        return new CommandLocale[0];
-    }
-
-    @Override
     public ConfigurationCategory category() {
         return ConfigurationCategory.GENERIC;
     }
@@ -70,21 +60,20 @@ public class ConfigsCfg implements ReloadableConfiguration {
 
     @Override
     public void executeConfig() {
-        String[] strings = plugin.strings();;
-        double[] doubles = plugin.doubles();
-        int[] integers = plugin.integers();
-        boolean[] booleans = plugin.booleans();
+        EnumMap<Strings, String> strings = plugin.strings();
+        EnumMap<Doubles, Double> doubles = plugin.doubles();
+        EnumMap<Integers, Integer>  integers = plugin.integers();
+        EnumMap<Booleans, Boolean> booleans = plugin.booleans();
 
-        strings[Strings.TABLE_RTP.ordinal()] = inFile.getString("server.table-rtp", "er_rtp_times");
-        strings[Strings.SERVER_PREFIX.ordinal()] = inFile.getString("server.prefix", "<color:#555555>[<color:#34eb40>E<color:#3471eb>R<color:#555555>]<color:#AAAAAA> ");
-        strings[Strings.PERM_TIMINGS_BYPASS.ordinal()] = inFile.getString("server.timing-bypass-perm", "eternia.timings.bypass");
+        strings.put(Strings.TABLE_RTP, inFile.getString("server.table-rtp", "er_rtp_times"));
+        strings.put(Strings.PERM_TIMINGS_BYPASS, inFile.getString("server.timing-bypass-perm", "eternia.timings.bypass"));
 
-        doubles[Doubles.RTP_COST.ordinal()] = inFile.getInt("eco.cost", 50);
+        doubles.put(Doubles.RTP_COST, inFile.getDouble("eco.cost", 50));
 
-        integers[Integers.COOLDOWN.ordinal()] = inFile.getInt("server.cooldown", 300);
-        integers[Integers.TELEPORT_DELAY.ordinal()] = inFile.getInt("teleport-delay", 5);
+        integers.put(Integers.COOLDOWN, inFile.getInt("server.cooldown", 300));
+        integers.put(Integers.TELEPORT_DELAY, inFile.getInt("teleport-delay", 5));
 
-        booleans[Booleans.ECON.ordinal()] = inFile.getBoolean("eco.enabled", true);
+        booleans.put(Booleans.ECON, inFile.getBoolean("eco.enabled", true));
 
         List<String> tempBannedWorlds = inFile.getStringList("rtp.banned-worlds");
         List<String> tempUnsafeWorlds = inFile.getStringList("rtp.unsafe-worlds");
@@ -129,19 +118,18 @@ public class ConfigsCfg implements ReloadableConfiguration {
             outFile.set("worlds-configs." + entry.getKey() + ".max.z", entry.getValue().maxZ());
         }
 
-        outFile.set("eco.cost", doubles[Doubles.RTP_COST.ordinal()]);
+        outFile.set("eco.cost", doubles.get(Doubles.RTP_COST));
 
         outFile.set("rtp.banned-worlds", plugin.bannedWorlds().toArray());
         outFile.set("rtp.unsafe-worlds", plugin.unsafeWorlds().toArray());
 
-        outFile.set("server.table-rtp", strings[Strings.TABLE_RTP.ordinal()]);
-        outFile.set("server.prefix", strings[Strings.SERVER_PREFIX.ordinal()]);
-        outFile.set("server.timing-bypass-perm", strings[Strings.PERM_TIMINGS_BYPASS.ordinal()]);
+        outFile.set("server.table-rtp", strings.get(Strings.TABLE_RTP));
+        outFile.set("server.timing-bypass-perm", strings.get(Strings.PERM_TIMINGS_BYPASS));
 
-        outFile.set("eco.enabled", booleans[Booleans.ECON.ordinal()]);
+        outFile.set("eco.enabled", booleans.get(Booleans.ECON));
 
-        outFile.set("server.cooldown", integers[Integers.COOLDOWN.ordinal()]);
-        outFile.set("teleport-delay", integers[Integers.TELEPORT_DELAY.ordinal()]);
+        outFile.set("server.cooldown", integers.get(Integers.COOLDOWN));
+        outFile.set("teleport-delay", integers.get(Integers.TELEPORT_DELAY));
     }
 
     @Override
